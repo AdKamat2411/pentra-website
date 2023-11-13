@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-
+import { auth } from 'src/firebase-config/firebase';
 import { InfluencerView } from 'src/sectionsk/influencer/view';
 import { useState, useEffect } from 'react';
 import { db } from 'src/firebase-config/firebase';
@@ -13,6 +13,7 @@ const pentra_id = queryParams.get('pentra_id');
 
 
 export default function ListsPage() {
+  if (auth.currentUser) {} else (window.location.href='/login');
 
 
   return (

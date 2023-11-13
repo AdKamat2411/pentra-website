@@ -1,11 +1,12 @@
 import { Helmet } from 'react-helmet-async';
 import { CreatorsView } from 'src/sectionsk/creators/view';
 import React, { useState, useEffect } from 'react'; // <-- Import useState and useEffect
-
+import { auth } from 'src/firebase-config/firebase';
 // ----------------------------------------------------------------------
 
 export default function ProductsPage() {
   const [isLoading, setIsLoading] = useState(true); // <-- Loading state
+  if (auth.currentUser) {} else (window.location.href='/login');
 
   useEffect(() => {
     // Simulate a network request or some loading process

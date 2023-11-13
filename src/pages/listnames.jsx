@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { useEffect, useState } from 'react';
-
+import { auth } from 'src/firebase-config/firebase';
 import { ListNamesView } from 'src/sectionsk/listnames/view';
 
 import { db } from 'src/firebase-config/firebase';
@@ -15,7 +15,8 @@ const listItems = [{name: "Amanda Cerny", platforms: [true, false, false], handl
 
 export default function ListNamesPage() {
 
-   
+  if (auth.currentUser) {} else (window.location.href='/login');
+
   const [lists, setLists] = useState([null]);
 
   const listData = collection(db, 'lists');
