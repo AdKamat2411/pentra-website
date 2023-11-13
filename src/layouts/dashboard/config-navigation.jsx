@@ -8,35 +8,41 @@ const icon = (name) => (
 
 const navConfig = [
   {
-    title: 'dashboard',
+    title: 'Home',
     path: '/',
     icon: icon('ic_analytics'),
   },
   {
-    title: 'user',
+    title: 'Pentra Creators',
+    path: '/products',
+    icon: icon('ic_user'),
+  },
+  {
+    title: 'Conversations',
+    path: '/conversations',
+    icon: icon('ic_blog'),
+  },
+  {
+    title: 'My campaigns',
+    path: '/campaigns',
+    icon: icon('ic_blog'),
+  },
+  {
+    title: 'My Lists',
+    path: '/lists',
+    icon: icon('ic_blog'),
+  },
+  {
+    title: 'Global Search',
     path: '/user',
     icon: icon('ic_user'),
   },
   {
-    title: 'product',
-    path: '/products',
-    icon: icon('ic_cart'),
-  },
-  {
-    title: 'blog',
-    path: '/blog',
-    icon: icon('ic_blog'),
-  },
-  {
-    title: 'login',
-    path: '/login',
+    title: 'My Account',
+    path: '/account',
     icon: icon('ic_lock'),
   },
-  {
-    title: 'Not found',
-    path: '/404',
-    icon: icon('ic_disabled'),
-  },
+  
 ];
 
 export default navConfig;

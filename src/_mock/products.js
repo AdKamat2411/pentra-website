@@ -1,14 +1,18 @@
 import { sample } from 'lodash';
 import { faker } from '@faker-js/faker';
+import { creator_avatars } from 'src/firebase-config/firebase.js'
 
 // ----------------------------------------------------------------------
 
 const PRODUCT_NAME = [
-  'Nike Air Force 1 NDESTRUKT',
-  'Nike Space Hippie 04',
-  'Nike Air Zoom Pegasus 37 A.I.R. Chaz Bear',
-  'Nike Blazer Low 77 Vintage',
-  'Nike ZoomX SuperRep Surge',
+  '@glampeoplehi',
+  '@haileybeiber___',
+  '@champagnepapipapi',
+  '@okokkok',
+  '@tylertyler',
+  '@tylertyler',
+  '@haileybeiber___',
+  '@haileybeiber___',
   'Zoom Freak 2',
   'Nike Air Max Zephyr',
   'Jordan Delta',
@@ -42,12 +46,12 @@ const PRODUCT_COLOR = [
 
 // ----------------------------------------------------------------------
 
-export const products = [...Array(24)].map((_, index) => {
+export const products = [...Array(creator_avatars.length)].map((_, index) => {
   const setIndex = index + 1;
 
   return {
     id: faker.string.uuid(),
-    cover: `/assets/images/products/product_${setIndex}.jpg`,
+    cover: creator_avatars[index],
     name: PRODUCT_NAME[index],
     price: faker.number.int({ min: 4, max: 99, precision: 0.01 }),
     priceSale: setIndex % 3 ? null : faker.number.int({ min: 19, max: 29, precision: 0.01 }),

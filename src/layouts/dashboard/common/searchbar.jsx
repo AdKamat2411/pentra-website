@@ -15,7 +15,7 @@ import Iconify from 'src/components/iconify';
 // ----------------------------------------------------------------------
 
 const HEADER_MOBILE = 64;
-const HEADER_DESKTOP = 92;
+const HEADER_DESKTOP = 62;
 
 const StyledSearchbar = styled('div')(({ theme }) => ({
   ...bgBlur({
@@ -29,7 +29,7 @@ const StyledSearchbar = styled('div')(({ theme }) => ({
   position: 'absolute',
   alignItems: 'center',
   height: HEADER_MOBILE,
-  padding: theme.spacing(0, 3),
+  padding: theme.spacing(0, 5),
   boxShadow: theme.customShadows.z8,
   [theme.breakpoints.up('md')]: {
     height: HEADER_DESKTOP,

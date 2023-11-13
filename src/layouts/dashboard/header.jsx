@@ -38,8 +38,7 @@ export default function Header({ onOpenNav }) {
 
       <Box sx={{ flexGrow: 1 }} />
 
-      <Stack direction="row" alignItems="center" spacing={1}>
-        <LanguagePopover />
+      <Stack direction="row" alignItems="center" spacing={1.5}>
         <NotificationsPopover />
         <AccountPopover />
       </Stack>
@@ -67,7 +66,7 @@ export default function Header({ onOpenNav }) {
       <Toolbar
         sx={{
           height: 1,
-          px: { lg: 5 },
+          px: { lg: 4 },
         }}
       >
         {renderContent}

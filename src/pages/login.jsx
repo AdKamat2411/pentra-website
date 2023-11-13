@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 
-import { LoginView } from 'src/sections/login';
+import { LoginView } from 'src/sectionsk/login';
 
 // ----------------------------------------------------------------------
 
@@ -8,7 +8,7 @@ export default function LoginPage() {
   return (
     <>
       <Helmet>
-        <title> Login | Minimal UI </title>
+        <title> Login | Pentra </title>
       </Helmet>
 
       <LoginView />
