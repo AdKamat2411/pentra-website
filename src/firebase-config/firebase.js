@@ -84,4 +84,4 @@ export async function addNewImage(file) {
   return newID;  // Return the customID of the new image for reference
 }
 
-export const creator_avatars = await getCoverImages();
+export const creator_avatars = getCoverImages();
