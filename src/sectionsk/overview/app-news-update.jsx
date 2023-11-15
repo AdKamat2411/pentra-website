@@ -88,5 +88,6 @@ NewsItem.propTypes = {
     title: PropTypes.string,
     description: PropTypes.string,
     postedAt: PropTypes.instanceOf(Date),
+    id: PropTypes.any,
   }),
 };

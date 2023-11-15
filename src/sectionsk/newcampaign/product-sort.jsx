@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import { listClasses } from '@mui/material/List';
 import Typography from '@mui/material/Typography';
+import PropTypes from 'prop-types';
 
 import Iconify from 'src/components/iconify';
 
@@ -38,15 +39,14 @@ export default function ShopProductSort({ onChange }) {
         } else {
             return;  // If "Global" is clicked and it's already selected, do nothing
         }
-    } else {
-        if (selectedOptions.includes('Global')) {
+    } else if (selectedOptions.includes('Global')) {
             newSelected = [optionValue];  // If "Global" is selected and other options are clicked, deselect "Global"
         } else if (selectedOptions.includes(optionValue)) {
             newSelected = selectedOptions.filter(item => item !== optionValue);  // Deselect the option if it's already selected
         } else {
             newSelected = [...selectedOptions, optionValue];  // Select the option if it's not already selected
         }
-    }
+    
 
     // Ensure at least one option is selected
     if (newSelected.length === 0) {
@@ -106,3 +106,7 @@ export default function ShopProductSort({ onChange }) {
     </>
   );
 }
+
+ShopProductSort.propTypes = {
+  onChange: PropTypes.func,
+};

@@ -4,10 +4,8 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-import { db } from 'src/firebase-config/firebase';
 import { getDocs, addDoc, collection } from 'firebase/firestore';
-import { creator_avatars } from 'src/firebase-config/firebase';
-import React from 'react';
+import { db, creator_avatars } from 'src/firebase-config/firebase';
 
 import { posts } from 'src/_mock/lists';
 import Card from '@mui/material/Card';
@@ -23,7 +21,7 @@ import PostSearch from '../post-search';
 // ----------------------------------------------------------------------
   
 
-export default function InfluencerView({ }) {
+export default function InfluencerView() {
 
  
   const queryParams = new URLSearchParams(window.location.search);
@@ -52,14 +50,14 @@ export default function InfluencerView({ }) {
       
         } catch (error) {
           alert(error);
-          console.log('os error:' + error);
+          console.log(error);
         }
       }
       
 
       otherstuff();
 
-    }, [])
+    }, [pentra_id])
   
     
 
@@ -120,6 +118,199 @@ export default function InfluencerView({ }) {
     }
   };
 
+  const renderStyleIcon = (style, icon, padding) => {
+    if (influencer && influencer.styles[style]) {
+      return (
+        <Box
+          border="0px solid black"
+          width="20px"
+          height="35px"
+          borderRadius="25px"
+          borderColor="pink"
+          justifyContent="center"
+          alignItems="center"
+          pl={padding}
+          pt="0.65"
+        >
+          <Typography fontSize="15px">{icon}</Typography>
+        </Box>
+      );
+    }
+    return null;
+  };
+
+  const renderSocialLink = (platform, urlPart, icon) => {
+    if (influencer && influencer.handles[platform] !== "") {
+      return (
+        <a
+          href={`https://www.${urlPart}/${influencer.handles[platform]}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}
+        >
+          <Iconify icon={icon} style={{ color: 'black', width: 32, height: 32 }} />
+        </a>
+      );
+    }
+    return null;
+  };
+
+  const renderGiftOption = (giftType, label) => {
+    if (influencer && influencer.gifts[giftType]) {
+      return (
+        <Box 
+          border="1px solid black"
+          width="86px"
+          height="35px"
+          borderRadius="7px"
+          borderColor="pink"
+          justifyContent="center"
+          alignItems="center"
+          direction="row"
+          pl={1.8}
+          pt={0.85}
+        >
+          <Stack direction="row" spacing={0.6} alignItems="center">
+            <Iconify icon="mdi-instagram" style={{ color: 'black', width: 14.8, height: 20 }} />
+            <Typography fontSize="12.5px" fontFamily="times new roman">{label}</Typography>
+          </Stack>
+        </Box>
+      );
+    }
+    return null;
+  };
+
+  const renderPlatformOffering = (platform, label, icon, paddingLeft) => {
+    if (influencer && influencer.gifts[platform]) {
+      return (
+        <Box 
+          border="1px solid black"
+          width="86px"
+          height="35px"
+          borderRadius="7px"
+          borderColor="pink"
+          justifyContent="center"
+          alignItems="center"
+          direction="row"
+          pl={paddingLeft}
+          pt={0.85}
+        >
+          <Stack direction="row" spacing={0.6} alignItems="center">
+            <Iconify icon={icon} style={{ color: 'black', width: 15, height: 20 }} />
+            <Typography fontSize="12.5px" fontFamily="times new roman">{label}</Typography>
+          </Stack>
+        </Box>
+      );
+    }
+    return null;
+  };
+
+  const renderInfluencerOffers = () => {
+    if (!influencer) return null;
+  
+    if (influencer.wantsGifts) {
+      return <Typography sx={{ mb: 2.3, fontStyle: 'italic', fontFamily: 'old standard TT' }}>
+                For a gift, I will post:
+             </Typography>;
+    } 
+      return (
+        <Stack>
+          <Typography sx={{ mb: 2.3, fontStyle: 'italic', fontFamily: 'old standard TT' }}>
+            I am looking for sponsors. My rates:
+          </Typography>
+          <Typography sx={{ mb: 2.3, fontStyle: 'italic', fontFamily: 'old standard TT' }}>
+            {influencer.sponsor_rates}
+          </Typography>
+        </Stack>
+      );
+    
+  };
+
+  const renderInstagramButton = () => {
+    if (!influencer || influencer.handles.IG === "") return null;
+  
+    return (
+      <Button disableRipple onClick={handleInstagramClick} sx={{ 
+        p: 0, // This ensures that the padding inside the button is removed.
+        minWidth: '45px', // Explicitly setting a minimum width. Adjust as needed.
+        width: '40px', // Explicitly setting the width.
+        height: '50px', // Making a square button.
+        borderRadius: '0%', 
+        borderBottom: 3,
+        borderBottomColor: IG_stats ? 'red' : 'white',
+        '&:hover': {
+          backgroundColor: 'transparent', // This will make the background color unchanged on hover
+          // Preventing the click effect
+          boxShadow: 'none',
+        },
+        '&:active': { 
+          boxShadow: 'none',
+          backgroundColor: 'transparent', // This will make the background color unchanged on active/click
+        },
+        // Removing the default button material touch ripple effect
+        MuiTouchRipple: { 
+          display: 'none', 
+        }, }}>
+        <Iconify icon="mdi-instagram" style={{ color: 'black', width: 34, height: 34 }} />
+      </Button>
+    );
+  };
+  
+  const renderTikTokButton = () => {
+    if (!influencer || influencer.handles.TT === "") return null;
+  
+    return (
+      <Button disableRipple onClick={handleTikTokClick} sx={{
+        
+        p: 0, // This ensures that the padding inside the button is removed.
+        minWidth: '45px', // Explicitly setting a minimum width. Adjust as needed.
+        width: '50px', // Explicitly setting the width.
+        height: '50px', // Making a square button.
+        borderRadius: '0%', 
+        borderBottom: 3,
+        borderBottomColor: TT_stats ? 'red' : 'white',
+        '&:hover': {
+          backgroundColor: 'transparent', // This will make the background color unchanged on hover
+          boxShadow: 'none', }
+
+      }}>
+        <Iconify icon="ic:baseline-tiktok" style={{ color: 'black', width: 44, height: 44 }} />
+      </Button>
+    );
+  };
+  
+  const renderYouTubeButton = () => {
+    if (!influencer || influencer.handles.YT === "") return null;
+  
+    return (
+      <Button disableRipple onClick={handleYouTubeClick} sx={{
+        p: 0, // This ensures that the padding inside the button is removed.
+        minWidth: '45px', // Explicitly setting a minimum width. Adjust as needed.
+        width: '50px', // Explicitly setting the width.
+        height: '50px', // Making a square button.
+        borderRadius: '0%', 
+        borderBottom: 3,
+        borderBottomColor: YT_stats ? 'red' : 'white',
+        '&:hover': {
+          backgroundColor: 'transparent', // This will make the background color unchanged on hover
+          boxShadow: 'none', // Preventing the click effect
+        },
+        '&:active': { 
+          boxShadow: 'none',
+          backgroundColor: 'transparent', // This will make the background color unchanged on active/click
+        },
+        // Removing the default button material touch ripple effect
+        MuiTouchRipple: { 
+          display: 'none', 
+        }
+      }}>
+        <Iconify icon="mdi-youtube" style={{ color: 'black', width: 44, height: 44 }} />
+      </Button>
+    );
+  };
+
+  // ---------------------------------------------------------
+
   return (
     
     <Container>
@@ -144,38 +335,27 @@ export default function InfluencerView({ }) {
 <Box border="0px solid black" width="20px" 
 height="35px" borderRadius="25px" borderColor="pink"
 justifyContent="center" alignItems="center" onClick={() => setShowEmail(!showEmail)}
-pl={1.65} pt={0.5}><Iconify color="grey" icon={showEmail ? "material-symbols:stacked-email-outline" : "material-symbols:stacked-email"}></Iconify></Box>
+pl={1.65} pt={0.5}><Iconify color="grey" icon={showEmail ? "material-symbols:stacked-email-outline" : "material-symbols:stacked-email"} /></Box>
 
-{influencer ? (showEmail ? <Box><Typography sx={{fontFamily: "old standard tt"}}>
-  {influencer.email}</Typography></Box> : null) : null}
+{
+  influencer && showEmail && (
+    <Box>
+      <Typography sx={{ fontFamily: "old standard tt" }}>
+        {influencer.email}
+      </Typography>
+    </Box>
+  )
+}
 
 </Stack>
 
 {/* INFLUENCER STYLES */}
 <Stack sx={{ pl: 0, mb: 0, mt: 1.2, mr: 2.6 }} direction="row" spacing={1} alignItems="right" justifyContent="right">
 
-{influencer ? ( influencer.styles.makeup ? <Box border="0px solid black" width="20px" 
-height="35px" borderRadius="25px" borderColor="pink"
-justifyContent="center" alignItems="center" 
-pl={1.25} pt={0.65}><Typography fontSize="15px">💄</Typography></Box> : null) : null}
-
-
-{influencer ? ( influencer.styles.skincare ? <Box border="0px solid black" width="20px" 
-height="35px" borderRadius="25px" borderColor="pink"
-justifyContent="center" alignItems="center" 
-pl={1.2} pt={0.7}><Typography fontSize="15px">🧴</Typography></Box> : null) : null}
-
-
-{influencer ? ( influencer.styles.fashion ? <Box border="0px solid black" width="20px" 
-height="35px" borderRadius="25px" borderColor="pink"
-justifyContent="center" alignItems="center" 
-pl={1.1} pt={0.65}><Typography>👠</Typography></Box> : null) : null}
-
-
-{influencer ? ( influencer.styles.lifestyle ? <Box border="0px solid black" width="20px" 
-height="35px" borderRadius="25px" borderColor="pink"
-justifyContent="center" alignItems="center" 
-pl={1.1} pt={0.65}><Typography>🌱</Typography></Box> : null) : null}
+  {renderStyleIcon('makeup', '💄', '1.25')}
+  {renderStyleIcon('skincare', '🧴', '1.2')}
+  {renderStyleIcon('fashion', '👠', '1.1')}
+  {renderStyleIcon('lifestyle', '🌱', '1.1')}
 
 </Stack> 
 </Stack>
@@ -196,8 +376,7 @@ pl={1.1} pt={0.65}><Typography>🌱</Typography></Box> : null) : null}
         position: 'absolute',
         borderRadius: '50%', // Apply a circular clipping mask
       }}
-    >
-    </Box>) : null}
+    />) : null}
         </Card>
 
         {/* INFLUENCER NAME */}
@@ -212,133 +391,28 @@ pl={1.1} pt={0.65}><Typography>🌱</Typography></Box> : null) : null}
           </Typography>
 
           <Stack direction="row" spacing={0.5}>
-          <a
-            href= {`https://www.instagram.com/${influencer ? influencer.handles.IG : "ok"}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}
-            >
-            {influencer ? (influencer.handles.IG !== "" ? <Iconify icon="mdi-instagram" style={{ color: 'black',  width: 24, height: 24 }} /> : <></>) : null}
-            </a>
-            <a
-            href= {`https://www.tiktok.com/${influencer ? influencer.handles.TT : ""}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}
-            >
-             {influencer ? (influencer.handles.TT !== "" ? <Iconify icon="ic:baseline-tiktok" style={{ color: 'black', width: 32, height: 32 }} /> : <></>) : null } 
-            </a>
-            <a
-            href= {`https://www.youtube.com/${influencer ? influencer.handles.YT : ""}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}
-            >
-            {influencer ? (influencer.handles.YT !== "" ? <Iconify icon="mdi-youtube" style={{ color: 'black', width: 32, height: 32 }} /> : <></> ) : null}
-            </a>
+          {renderSocialLink('IG', 'instagram.com', 'mdi-instagram')}
+          {renderSocialLink('TT', 'tiktok.com', 'ic:baseline-tiktok')}
+          {renderSocialLink('YT', 'youtube.com', 'mdi-youtube')}
             </Stack>
             </Stack>
 
-
-          {/* INFLUENCER STYLES
-          <Stack sx={{ pl: 0, mb: 2 }} direction="row" spacing={1} alignItems="center" justifyContent="center">
-
-          {influencer ? ( influencer.styles.makeup ? <Box border="1px solid black" width="36px" 
-      height="35px" borderRadius="25px" borderColor="pink"
-      justifyContent="center" alignItems="center" 
-      pl={1.1} pt={0.65}><Typography>💄</Typography></Box> : null) : null}
-
-      
-      {influencer ? ( influencer.styles.skincare ? <Box border="1px solid black" width="36px" 
-      height="35px" borderRadius="25px" borderColor="pink"
-      justifyContent="center" alignItems="center" 
-      pl={1.1} pt={0.65}><Typography>🧴</Typography></Box> : null) : null}
-      
-
-      {influencer ? ( influencer.styles.fashion ? <Box border="1px solid black" width="36px" 
-      height="35px" borderRadius="25px" borderColor="pink"
-      justifyContent="center" alignItems="center" 
-      pl={1.1} pt={0.65}><Typography>👠</Typography></Box> : null) : null}
-
-
-     {influencer ? ( influencer.styles.lifestyle ? <Box border="1px solid black" width="36px" 
-      height="35px" borderRadius="25px" borderColor="pink"
-      justifyContent="center" alignItems="center" 
-      pl={1.1} pt={0.65}><Typography>🌱</Typography></Box> : null) : null}
-
-      </Stack> */}
-
-      {/* INFLUENCER POSTS */}
-
-      {influencer ? (influencer.wantsGifts ? <Typography sx={{ mb: 2.3, fontStyle: 'italic', fontFamily: 'old standard TT' }}> 
-      For a gift, I'll post: </Typography> : <Stack><Typography sx={{ mb: 2.3, fontStyle: 'italic', fontFamily: 'old standard TT' }}> 
-      I'm looking for sponsors. My rates: </Typography><Typography sx={{ mb: 2.3, fontStyle: 'italic', fontFamily: 'old standard TT' }}> 
-      {influencer.sponsor_rates} </Typography></Stack>) : null}
+  {renderInfluencerOffers()}
 
       <Stack sx={{ pl: 0, mb: 1 }} direction="row" spacing={1} alignItems="center" justifyContent="center">
 
-          {influencer ? ( influencer.gifts.IG_reel ? <Box border="1px solid black" 
-          width="86px" height="35px" borderRadius="7px" borderColor="pink"
-         justifyContent="center" alignItems="center" direction="row"
-         pl={1.8} pt={0.85}><Stack direction="row" spacing={0.6} alignItems="center">
 
-          <Iconify icon="mdi-instagram" style={{ color: 'black',  width: 14.8, height: 20 }} />
-          <Typography fontSize="12.5px" fontFamily="times new roman">
-        REEL</Typography></Stack></Box> : null) : null}
-
-      
-        {influencer ? ( influencer.gifts.IG_story ? <Box border="1px solid black" 
-          width="86px" height="35px" borderRadius="7px" borderColor="pink"
-         justifyContent="center" alignItems="center" direction="row"
-         pl={1.45} pt={0.85}><Stack direction="row" spacing={0.6} alignItems="center">
-
-          <Iconify icon="mdi-instagram" style={{ color: 'black',  width: 14.8, height: 20 }} />
-          <Typography fontSize="12.5px" fontFamily="times new roman">
-        STORY</Typography></Stack></Box> : null) : null}
-
-
-        {influencer ? ( influencer.gifts.IG_post ? <Box border="1px solid black" 
-          width="86px" height="35px" borderRadius="7px" borderColor="pink"
-         justifyContent="center" alignItems="center" direction="row"
-         pl={1.8} pt={0.85}><Stack direction="row" spacing={0.6} alignItems="center">
-
-          <Iconify icon="mdi-instagram" style={{ color: 'black',  width: 14.8, height: 20 }} />
-          <Typography fontSize="12.5px" fontFamily="times new roman">
-        POST</Typography></Stack></Box> : null) : null}
-
-      
+  {renderGiftOption('IG_reel', 'REEL')}
+  {renderGiftOption('IG_story', 'STORY')}
+  {renderGiftOption('IG_post', 'POST')}
         
       </Stack>
 
       <Stack sx={{ pl: 0, mb: 3 }} direction="row" spacing={1} alignItems="center" justifyContent="center">
 
-          {influencer ? ( influencer.gifts.tiktok ? <Box border="1px solid black" 
-          width="86px" height="35px" borderRadius="7px" borderColor="pink"
-         justifyContent="center" alignItems="center" direction="row"
-         pl={1.2} pt={0.85}><Stack direction="row" spacing={0.35} alignItems="center">
-
-          <Iconify icon="ic:baseline-tiktok" style={{ color: 'black',  width: 15, height: 20 }} />
-          <Typography fontSize="12.5px" fontFamily="times new roman">
-        TIKTOK</Typography></Stack></Box> : null) : null}
-
-      
-        {influencer ? ( influencer.gifts.YT_video ? <Box border="1px solid black" 
-          width="86px" height="35px" borderRadius="7px" borderColor="pink"
-         justifyContent="center" alignItems="center" direction="row"
-         pl={1.33} pt={0.85}><Stack direction="row" spacing={0.5} alignItems="center">
-
-          <Iconify icon="mdi-youtube" style={{ color: 'black',  width: 18.5, height: 20 }} />
-          <Typography fontSize="12.5px" fontFamily="times new roman">
-        VIDEO</Typography></Stack></Box> : null) : null}
-
-
-        {influencer ? ( influencer.gifts.other ? <Box border="1px solid black" 
-          width="86px" height="36px" borderRadius="7px" borderColor="pink"
-         justifyContent="center" alignItems="center" direction="row"
-         pl={2.6} pt={1}><Stack direction="row" spacing={0.6} alignItems="center">
-
-          <Typography fontSize="12.5px" fontFamily="times new roman">
-        OTHER</Typography></Stack></Box> : null) : null}
+      {renderPlatformOffering('tiktok', 'TIKTOK', "ic:baseline-tiktok", 1.2)}
+  {renderPlatformOffering('YT_video', 'VIDEO', "mdi-youtube", 1.33)}
+  {renderPlatformOffering('other', 'OTHER', "", 2.6)} 
 
       
         
@@ -348,109 +422,9 @@ pl={1.1} pt={0.65}><Typography>🌱</Typography></Box> : null) : null}
       {/* INFLUENCER STATS */}
       <Stack sx={{ width: 40, pl: 0, mb: 2 }} direction="row" spacing={1.5} alignItems="center" justifyContent="center">
   
-      {
-  influencer ? (
-    influencer.handles.IG !== "" ? (
-  <Button disableRipple
-    onClick={() => handleInstagramClick()} 
-    sx={{ 
-      p: 0, // This ensures that the padding inside the button is removed.
-      minWidth: '45px', // Explicitly setting a minimum width. Adjust as needed.
-      width: '40px', // Explicitly setting the width.
-      height: '50px', // Making a square button.
-      borderRadius: '0%', 
-      borderBottom: 3,
-      borderBottomColor: IG_stats ? 'red' : 'white',
-      '&:hover': {
-        backgroundColor: 'transparent', // This will make the background color unchanged on hover
-        // Preventing the click effect
-        boxShadow: 'none',
-      },
-      '&:active': { 
-        boxShadow: 'none',
-        backgroundColor: 'transparent', // This will make the background color unchanged on active/click
-      },
-      // Removing the default button material touch ripple effect
-      MuiTouchRipple: { 
-        display: 'none', 
-      }, 
-    }}
-  >
-    <Iconify icon="mdi-instagram" style={{ color: 'black',  width: 34, height: 34 }} />
-  </Button>
-  ) : null
-  ) : null
-}
-
-  {
-  influencer ? (
-    influencer.handles.TT !== "" ? (
-      <Button
-        disableRipple
-        onClick={handleTikTokClick}
-        sx={{
-          p: 0, // This ensures that the padding inside the button is removed.
-          minWidth: '45px', // Explicitly setting a minimum width. Adjust as needed.
-          width: '50px', // Explicitly setting the width.
-          height: '50px', // Making a square button.
-          borderRadius: '0%', 
-          borderBottom: 3,
-          borderBottomColor: TT_stats ? 'red' : 'white',
-          '&:hover': {
-            backgroundColor: 'transparent', // This will make the background color unchanged on hover
-            // Preventing the click effect
-            boxShadow: 'none',
-          },
-          '&:active': { 
-            boxShadow: 'none',
-            backgroundColor: 'transparent', // This will make the background color unchanged on active/click
-          },
-          // Removing the default button material touch ripple effect
-          MuiTouchRipple: { 
-            display: 'none', 
-          }
-        }}
-      >
-        <Iconify icon="ic:baseline-tiktok" style={{ color: 'black', width: 44, height: 44 }} />
-      </Button>
-    ) : null
-  ) : null
-}
-
-
-{
-  influencer ? (
-    influencer.handles.YT !== "" ? (
-      <Button
-        disableRipple
-        onClick={handleYouTubeClick}
-        sx={{
-          p: 0, // This ensures that the padding inside the button is removed.
-          minWidth: '45px', // Explicitly setting a minimum width. Adjust as needed.
-          width: '50px', // Explicitly setting the width.
-          height: '50px', // Making a square button.
-          borderRadius: '0%', 
-          borderBottom: 3,
-          borderBottomColor: YT_stats ? 'red' : 'white',
-          '&:hover': {
-            backgroundColor: 'transparent', // This will make the background color unchanged on hover
-            boxShadow: 'none', // Preventing the click effect
-          },
-          '&:active': { 
-            boxShadow: 'none',
-            backgroundColor: 'transparent', // This will make the background color unchanged on active/click
-          },
-          // Removing the default button material touch ripple effect
-          MuiTouchRipple: { 
-            display: 'none', 
-          }
-        }}
-      >
-        <Iconify icon="mdi-youtube" style={{ color: 'black', width: 44, height: 44 }} />
-      </Button>
-    ) : null
-  ) : null
-}
+      {renderInstagramButton()}
+      {renderTikTokButton()}
+      {renderYouTubeButton()}
 
 </Stack>
 
@@ -483,8 +457,10 @@ pl={1.1} pt={0.65}><Typography>🌱</Typography></Box> : null) : null}
           </Stack>
         </Stack>
 
+      
       </Card>
-      </Card>
+      
+</Card>
 
 
 
@@ -493,9 +469,9 @@ pl={1.1} pt={0.65}><Typography>🌱</Typography></Box> : null) : null}
  
           <Card sx = {{ width: '100%', height: 470}}>
      <></>
-          
 
             </Card>
+
           <Card sx={{ width: '100%', height: '130px', bgcolor: '#fffafa', borderRadius: '0 0 4px 4px'  }}>
       {/* The Box component here works as a flex container for the content inside the Card */}
       <Box

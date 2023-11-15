@@ -5,8 +5,9 @@ import { BlogView } from 'src/sectionsk/campaigns/view';
 // ----------------------------------------------------------------------
 
 export default function BlogPage() {
-  if (auth.currentUser) {} else (window.location.href='/login');
-
+  if (!auth.currentUser) {
+    window.location.href = '/login';
+  }
   return (
     <>
       <Helmet>

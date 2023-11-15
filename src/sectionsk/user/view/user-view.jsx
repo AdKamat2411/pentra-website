@@ -193,7 +193,7 @@ export default function UserPage() {
                     <UserTableRow
                       key={row.id}
                       IG_handle={row.IG_handle}
-                      platforms={`${row?.platforms[0] == true && "IG"}${row?.platforms[1] == true ? " TT" : ""}${row?.platforms[2] == true ? " YT" : ""}`}
+                      platforms={`${row?.platforms[0] === true && "IG"}${row?.platforms[1] === true ? " TT" : ""}${row?.platforms[2] === true ? " YT" : ""}`}
                       engagement={row.engagement}
                       followers={row.followers}
                       avatarUrl={row.avatarUrl}

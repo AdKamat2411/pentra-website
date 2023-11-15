@@ -7,6 +7,7 @@ import { listClasses } from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 
 import Iconify from 'src/components/iconify';
+import PropTypes from 'prop-types';
 
 const SORT_OPTIONS = [
   { value: 'Platform', label: 'Platforms' },
@@ -33,11 +34,9 @@ export default function ShopProductSort({ onChange }) {
     if (optionValue === 'Platform') {
         if (selectedOptions.includes('Platform')) {
             return;
-        } else {
-            newSelected = ['Platform'];
         }
-    } else {
-        if (selectedOptions.includes('Platform')) {
+        newSelected = ['Platform'];
+    } else if (selectedOptions.includes('Platform')) {
             newSelected = [optionValue];
         } else if (newSelected.includes(optionValue)) {
             const index = newSelected.indexOf(optionValue);
@@ -45,7 +44,7 @@ export default function ShopProductSort({ onChange }) {
         } else {
             newSelected.push(optionValue);
         }
-    }
+    
 
     setSelectedOptions(newSelected);
     if (onChange) { // Ensure the callback exists before calling it
@@ -98,3 +97,7 @@ export default function ShopProductSort({ onChange }) {
     </>
   );
 }
+
+ShopProductSort.propTypes = {
+  onChange: PropTypes.func,
+};

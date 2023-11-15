@@ -24,9 +24,9 @@ import Box from '@mui/material/Box'
 
 import Iconify from 'src/components/iconify';
 
-import PostCard from '../post-card';
-import PostSort from '../post-sort';
-import PostSearch from '../post-search';
+// import PostCard from '../post-card';
+// import PostSort from '../post-sort';
+// import PostSearch from '../post-search';
 
 
 // ----------------------------------------------------------------------
@@ -66,7 +66,7 @@ export default function AccountView() {
   
   const publishCampaign = async () => {
     // Check if the required fields are empty
-    if (!campaign_name || !campaign_description || !campaign_end_date || profileSrc == '/assets/images/avatars/bg1.png') {
+    if (!campaign_name || !campaign_description || !campaign_end_date || profileSrc === '/assets/images/avatars/bg1.png') {
       alert("Name, Description, Date, and Image are required fields");
       return;
     }
@@ -74,11 +74,11 @@ export default function AccountView() {
     // Rest of the code for publishing the campaign
     const newCampaignData = {
       campaign_filters: {
-        engagement: engagement,
-        followers: followers,
-        locations: locations,
-        styles: styles,
-        platforms: platforms,
+        engagement,
+        followers,
+        locations,
+        styles,
+        platforms,
       },
       campaign_respondees: [],
       campaign_id: Math.floor(10000000 + Math.random() * 90000000),
@@ -262,8 +262,7 @@ export default function AccountView() {
 
           <TextField sx={{ width: "20%" }} 
           onChange={e => setCampaign_end_date(e.target.value)}
-          placeholder="11/11/23" size="small"> 
-          </TextField>
+          placeholder="11/11/23" size="small" /> 
 
         </Stack>
 
@@ -288,10 +287,9 @@ export default function AccountView() {
 
         </Stack>
 
-        <Stack direction="row" spacing={2}>
+        <Stack direction="row" spacing={2} />
         
 
-</Stack>
 
       
         </Stack>

@@ -46,7 +46,7 @@ export default function UserTableRow({
 
         <TableCell component="th" scope="row" padding="none">
           <Stack direction="row" alignItems="center" spacing={2}>
-            <Avatar sx={{ width: 38, height: 38 }} height="11" alt={name} src={avatarUrl} />
+            <Avatar sx={{ width: 38, height: 38 }} height="11" alt="name" src={avatarUrl} />
             <Typography variant="subtitle2" noWrap>
               {IG_handle}
             </Typography>
@@ -68,7 +68,7 @@ export default function UserTableRow({
         </TableCell>
 
         <TableCell align="left">
-          <Label color={(email === "" && 'error') || 'success'}>{email != "" ? email : "No email"}</Label>
+          <Label color={(email === "" && 'error') || 'success'}>{email !== "" ? email : "No email"}</Label>
         </TableCell>
 
         <TableCell align="right">
@@ -111,4 +111,5 @@ UserTableRow.propTypes = {
   country: PropTypes.any,
   selected: PropTypes.any,
   followers: PropTypes.any,
+  email: PropTypes.any,
 };

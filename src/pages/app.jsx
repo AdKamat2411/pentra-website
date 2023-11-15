@@ -5,8 +5,9 @@ import { AppView } from 'src/sectionsk/overview/view';
 // ----------------------------------------------------------------------
 
 export default function AppPage() {
-  if (auth.currentUser) {} else (window.location.href='/login');
-  return (
+  if (!auth.currentUser) {
+    window.location.href = '/login';
+  }  return (
     <>
       <Helmet>
         <title> Home | Pentra* </title>

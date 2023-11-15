@@ -7,6 +7,7 @@ import { listClasses } from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 
 import Iconify from 'src/components/iconify';
+import PropTypes from 'prop-types';
 
 const SORT_OPTIONS = [
   { value: 'All Followers', label: 'All Followers' },
@@ -32,8 +33,7 @@ export default function ShopProductSort({ onChange }) {
     
     if (optionValue === 'All Followers') {
       newSelected = ['All Followers'];
-    } else {
-      if (newSelected.includes('All Followers')) {
+    } else if (newSelected.includes('All Followers')) {
         newSelected = [optionValue];
       } else if (newSelected.includes(optionValue)) {
         const index = newSelected.indexOf(optionValue);
@@ -41,7 +41,7 @@ export default function ShopProductSort({ onChange }) {
       } else {
         newSelected.push(optionValue);
       }
-    }
+    
 
     setSelectedOptions(newSelected);
     if (onChange) {
@@ -94,3 +94,8 @@ export default function ShopProductSort({ onChange }) {
     </>
   );
 }
+
+ShopProductSort.propTypes = {
+  onChange: PropTypes.func,
+};
+

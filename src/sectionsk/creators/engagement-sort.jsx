@@ -8,6 +8,8 @@ import Typography from '@mui/material/Typography';
 
 import Iconify from 'src/components/iconify';
 
+import PropTypes from 'prop-types';
+
 // ----------------------------------------------------------------------
 
 const SORT_OPTIONS = [
@@ -20,7 +22,7 @@ const SORT_OPTIONS = [
 
 ];
 
-export default function ShopProductSort({ onChange, values }) {
+const ShopProductSort = ({ onChange, values }) => {
   const [open, setOpen] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState(values); // Default selection
 
@@ -40,15 +42,14 @@ export default function ShopProductSort({ onChange, values }) {
         } else {
             return;  // If "All Engagement" is clicked and it's already selected, do nothing
         }
-    } else {
-        if (selectedOptions.includes('All Engagement')) {
+    } else if (selectedOptions.includes('All Engagement')) {
             newSelected = [optionValue];  // If "All Engagement" is selected and other options are clicked, deselect "All Engagement"
         } else if (selectedOptions.includes(optionValue)) {
             newSelected = selectedOptions.filter(item => item !== optionValue);  // Deselect the option if it's already selected
         } else {
             newSelected = [...selectedOptions, optionValue];  // Select the option if it's not already selected
         }
-    }
+    
 
     // Ensure at least one option is selected
     if (newSelected.length === 0) {
@@ -59,6 +60,12 @@ export default function ShopProductSort({ onChange, values }) {
 
     // Call the onChange callback with the new selected options
     onChange(newSelected);
+};
+
+const getDisplayText = (options) => {
+  if (selectedOptions.length === 0) return "All Engagement";
+  if (selectedOptions.length === 1) return selectedOptions[0];
+  return `${selectedOptions.length} Engagements`;
 };
 
 
@@ -73,9 +80,7 @@ export default function ShopProductSort({ onChange, values }) {
       >
         &nbsp;
         <Typography component="span" variant="subtitle2" sx={{ color: 'text.secondary' }}>
-        {selectedOptions.length === 0 ? "All Engagement" : (selectedOptions.length === 1
-            ? selectedOptions[0]
-            : `${selectedOptions.length} Engagements`)}
+        {getDisplayText(selectedOptions)}
         </Typography>
       </Button>
 
@@ -108,3 +113,15 @@ export default function ShopProductSort({ onChange, values }) {
     </>
   );
 }
+
+ShopProductSort.defaultProps = {
+  onChange: null,
+  values: [],
+};
+
+ShopProductSort.propTypes = {
+  onChange: PropTypes.func,
+  values: PropTypes.arrayOf(PropTypes.string),
+};
+
+export default ShopProductSort;

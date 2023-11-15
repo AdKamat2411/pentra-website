@@ -4,10 +4,9 @@ import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-import { db } from 'src/firebase-config/firebase';
 import { getDocs, addDoc, collection } from 'firebase/firestore';
 
-import { creator_avatars } from 'src/firebase-config/firebase';
+import { db, creator_avatars } from 'src/firebase-config/firebase';
 import { products } from 'src/_mock/products';
 import Button from '@mui/material/Button';
 import ProductSearch from '../product-search';
@@ -19,7 +18,6 @@ import PlatformSort from '../platform-sort';
 import EngagementSort from '../engagement-sort';
 import StyleSort from '../style-sort';
 import ProductFilters from '../product-filters';
-import { result } from 'lodash';
 
 
 // ----------------------------------------------------------------------
@@ -77,7 +75,7 @@ export default function ProductsView() {
 
   otherstuff();
   // addDocument();
-  }, [])
+  }, [creatorsData])
 
 
   const handleOpenFilter = () => {
@@ -144,9 +142,9 @@ export default function ProductsView() {
         // Location Filter
         if (!matchesLocation) {
             matchesLocation = (
-                (locations.includes("The West") && creator.data().country == "USA" || "UK" || "CANADA" || "AUSTRALIA") ||
-                (locations.includes("US only") && creator.data().country == "USA")
-                // || (locations.includes("Asia") && creator.data().country == "YourExpectedValueForAsia")
+                (locations.includes("The West") && creator.data().country === "USA" || "UK" || "CANADA" || "AUSTRALIA") ||
+                (locations.includes("US only") && creator.data().country === "USA")
+                // || (locations.includes("Asia") && creator.data().country === "YourExpectedValueForAsia")
             );
         }
         
@@ -171,11 +169,11 @@ export default function ProductsView() {
       // Engagement Filter
       if (!matchesEngagement) {
         matchesEngagement = (
-            (engagement.includes("A+") && creator.data().engagement == "A+") ||
-            (engagement.includes("A") && creator.data().engagement == "A") ||
-            (engagement.includes("B+") && creator.data().engagement == "B+") ||
-            (engagement.includes("B") && creator.data().engagement == "B") ||
-            (engagement.includes("C") && creator.data().engagement == "C")
+            (engagement.includes("A+") && creator.data().engagement === "A+") ||
+            (engagement.includes("A") && creator.data().engagement === "A") ||
+            (engagement.includes("B+") && creator.data().engagement === "B+") ||
+            (engagement.includes("B") && creator.data().engagement === "B") ||
+            (engagement.includes("C") && creator.data().engagement === "C")
 
         );
     }

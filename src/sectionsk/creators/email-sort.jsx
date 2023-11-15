@@ -7,6 +7,7 @@ import { listClasses } from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 
 import Iconify from 'src/components/iconify';
+import PropTypes from 'prop-types';
 
 // ----------------------------------------------------------------------
 
@@ -90,3 +91,10 @@ export default function ShopProductSort() {
     </>
   );
 }
+
+ShopProductSort.defaultProps = {
+};
+
+// Define prop types
+ShopProductSort.propTypes = {
+};

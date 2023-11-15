@@ -65,7 +65,7 @@ export default function AccountPopover() {
   const account = {
   
     displayName: auth.currentUser
-    ? auth?.currentUser?.email.split('@')[0].charAt(0).toUpperCase() + auth?.currentUser?.email.split('@')[0].slice(1)
+    ? auth.currentUser.email.split('@')[0].charAt(0).toUpperCase() + auth.currentUser.email.split('@')[0].slice(1)
     : 'N/A',
       email: auth.currentUser ? auth?.currentUser?.email : 'N/A',
     photoURL: profileSrc,

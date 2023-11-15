@@ -51,3 +51,8 @@ export default function PostSearch({ posts }) {
     />
   );
 }
+
+PostSearch.propTypes = {
+  posts: PropTypes.any,
+};
+

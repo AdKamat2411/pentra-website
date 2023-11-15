@@ -4,9 +4,8 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
-import { auth } from 'src/firebase-config/firebase';
 
-import { db } from 'src/firebase-config/firebase';
+import { db, auth } from 'src/firebase-config/firebase';
 import { getDocs, addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 
 import Iconify from 'src/components/iconify';
@@ -19,12 +18,14 @@ export default function ListsView() {
   const [isAddingList, setAddingList] = useState(false);
   const [newList, setNewList] = useState('');
 
-  const brandsData = collection(db, 'brands');
+
+  useEffect(() => {
+    const brandsData = collection(db, 'brands');
 
   const getBrandLists = async () => {
     try {
       const data = await getDocs(brandsData);
-      const userDoc = data.docs.find(doc => doc.id === auth.currentUser.email);
+      const userDoc = data.docs.find(docc => docc.id === auth.currentUser.email);
       if (userDoc) {
         setBrandLists(userDoc.data().lists || []);
       } else {
@@ -34,8 +35,6 @@ export default function ListsView() {
       alert(err);
     }
   };
-
-  useEffect(() => {
     getBrandLists();
   }, []);
 

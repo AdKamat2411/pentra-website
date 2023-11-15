@@ -10,8 +10,7 @@ import Card from '@mui/material/Card';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box'
 
-import { auth } from 'src/firebase-config/firebase';
-import { db } from 'src/firebase-config/firebase';
+import { db, auth } from 'src/firebase-config/firebase';
 import { getDocs, collection, doc, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, getStorage, deleteObject, uploadString } from 'firebase/storage'; // Import necessary Firebase Storage functions
 
@@ -43,10 +42,14 @@ export default function AccountView() {
 
   const brandsData = collection(db, 'brands');
 
+  
+
+  useEffect(() => {
+
   const getBrandInfo = async () => {
     try {
       const data = await getDocs(brandsData);
-      const userDoc = data.docs.find((doc) => doc.id === auth.currentUser.email);
+      const userDoc = data.docs.find((docc) => docc.id === auth.currentUser.email);
       if (userDoc) {
         // ... your existing logic ...
         setBrand(userDoc.data());
@@ -69,34 +72,30 @@ export default function AccountView() {
       alert(err);
     }
   };
-  
-
-  useEffect(() => {
     getBrandInfo();
-  }, [])
+  }, [brandsData, storage])
 
   const storage = getStorage();
 
-   const handleImageUpload = async () => {
-  if (fileInputRef.current.files[0]) {
-    const file = fileInputRef.current.files[0];
+//    const handleImageUpload = async () => {
+//   if (fileInputRef.current.files[0]) {
+//     const file = fileInputRef.current.files[0];
     
-    // Create a storage reference
-    const storageRef = ref(storage, `brands/${auth.currentUser.email}`);
+//     // Create a storage reference
+//     const storageRef = ref(storage, `brands/${auth.currentUser.email}`);
     
-    // Upload the file
-    await uploadBytes(storageRef, file);
+//     // Upload the file
+//     await uploadBytes(storageRef, file);
     
-    // After upload, if you wish to set the new image URL to profileSrc state
-    const downloadURL = await getDownloadURL(storageRef);
-    setProfileSrc(downloadURL);
-  }
-}
+//     // After upload, if you wish to set the new image URL to profileSrc state
+//     const downloadURL = await getDownloadURL(storageRef);
+//     setProfileSrc(downloadURL);
+//   }
+// }
 
 const uploadProfilePicture = async () => {
   try {
     // Upload the profile image to Firebase Storage
-    const storage = getStorage();
     const storageRef = ref(storage, `brands/${auth.currentUser.email}/${auth.currentUser.email}`); // Setting the image name to user's email
 
     // Check if image already exists and delete it
@@ -139,23 +138,23 @@ const saveChanges = async () => {
     const updateData = {};
 
     if (userName !== null) {
-      updateData['user_name'] = userName;
+      updateData.user_name = userName;
     }
 
     if (brandName !== null) {
-      updateData['brand_name'] = brandName;
+      updateData.brand_name = brandName;
     }
 
     if (giftMessage !== null) {
-      updateData['messages.gift'] = giftMessage;
+      updateData.messages.gift = giftMessage;
     }
 
     if (sponsorMessage !== null) {
-      updateData['messages.sponsor'] = sponsorMessage;
+      updateData.messages.sponsor = sponsorMessage;
     }
 
     if (defaultMessage !== null) {
-      updateData['messages.default'] = defaultMessage;
+      updateData.messages.default = defaultMessage;
     }
 
     await updateDoc(userDocRef, updateData);
@@ -238,7 +237,6 @@ const handleImageChange = (event) => {
             position: 'absolute', 
             top: '87%', 
             left: '83%',
-            width: 30,
             transform: 'translate(-50%, -50%)', 
             color: 'grey', // or any contrasting color
         }}

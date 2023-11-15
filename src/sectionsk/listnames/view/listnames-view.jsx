@@ -15,6 +15,7 @@ import { users } from 'src/_mock/user';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
+import PropTypes from 'prop-types';
 
 
 import { db } from 'src/firebase-config/firebase';
@@ -26,7 +27,6 @@ import UserTableHead from '../user-table-head';
 import TableEmptyRows from '../table-empty-rows';
 import UserTableToolbar from '../user-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
-
 // ----------------------------------------------------------------------
 
 export default function ListNamesPage({ listName, listId }) {
@@ -70,26 +70,26 @@ export default function ListNamesPage({ listName, listId }) {
   
     const [lists, setLists] = useState([]);
     const listData = collection(db, 'lists');
-    
   
-    const getLists = async () => {
-      try {
-        const data = await getDocs(listData);
-        const retrievedLists = await data.docs?.map((doc) => ({
-            ...doc.data(),
-            id: doc.id,
-        })).filter(list => list.listName === listName);
     
-        await setLists(retrievedLists);
-
-      } catch (err) {
-        alert(err);
-      }
-    }
   
     useEffect(() => {
+      const getLists = async () => {
+        try {
+          const data = await getDocs(listData);
+          const retrievedLists = await data.docs?.map((docc) => ({
+              ...docc.data(),
+              id: docc.id,
+          })).filter(list => list.listName === listName);
+      
+          await setLists(retrievedLists);
+  
+        } catch (err) {
+          alert(err);
+        }
+      }
       getLists();
-  }, []);
+  }, [listData, listName]);
   
 
   
@@ -271,3 +271,10 @@ export default function ListNamesPage({ listName, listId }) {
     </Container>
   );
 }
+
+
+
+ListNamesPage.propTypes = {
+  listName: PropTypes.any,
+  listId: PropTypes.number,
+};

@@ -10,7 +10,6 @@ import Button from '@mui/material/Button'
 import { fCurrency } from 'src/utils/format-number';
 import { useState } from 'react';
 
-
 import Label from 'src/components/label';
 import { ColorPreview } from 'src/components/color-utils';
 import ListSelect from './list-select'
@@ -18,7 +17,7 @@ import ListSelect from './list-select'
 
 // ----------------------------------------------------------------------
 
-export default function ShopProductCard({ creator, pfp }) {
+const ShopProductCard = ({ creator, pfp }) => {
   const renderStatus = (
     <Label
       variant="filled"
@@ -35,12 +34,16 @@ export default function ShopProductCard({ creator, pfp }) {
     </Label>
   );
 
+  const handleClickRoute = () => {
+    window.location.href = `/influencer?pentra_id=${creator.pentra_id}`;
+  }
+
   const renderImg = (
     <Box
       component="img"
       alt={creator.name}
       src={pfp}
-      onClick={() => window.location.href = `/influencer?pentra_id=${creator.pentra_id}`}
+      onClick={() => handleClickRoute()}
       sx={{
         top: 0,
         width: 210,
@@ -70,8 +73,9 @@ export default function ShopProductCard({ creator, pfp }) {
 
   function formatFollowers(number) {
     if (number < 1000) return number.toString();
-    return (number / 1000).toFixed(1) + "k";
+    return `${(number / 1000).toFixed(1)}k`;
   }
+  
   
 
   return (
@@ -179,7 +183,7 @@ export default function ShopProductCard({ creator, pfp }) {
     justifyContent: 'center',
     transition: 'background-color 0.3s, color 0.3s, border-color 0.3s',
   }}
-  onClick={() => window.location.href = `/influencer?pentra_id=${creator.pentra_id}`}
+  onClick={() => handleClickRoute()}
   >
 <Iconify icon="mingcute:chat-1-line" style={{ marginRight: '4px', fontSize: '16px'}} />
 Message
@@ -197,4 +201,8 @@ Message
 
 ShopProductCard.propTypes = {
   creator: PropTypes.object,
+  pfp: PropTypes.any,
 };
+
+export default ShopProductCard;
+

@@ -12,7 +12,6 @@ import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { getDoc, doc, setDoc, collection, query, where } from 'firebase/firestore';
-import { db } from 'src/firebase-config/firebase';  // make sure you've exported your firestore instance as 'db'
 
 import { useRouter } from 'src/routes/hooks';
 
@@ -21,11 +20,11 @@ import { bgGradient } from 'src/theme/css';
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 
-import { auth, googleProvider } from 'src/firebase-config/firebase';
+import { db, auth, googleProvider } from 'src/firebase-config/firebase';
 import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { useState, useEffect } from 'react';
 
-import loginImage from '/assets/images/covers/cover_19.jpg'; // Replace with the actual image path
+// import loginImage from '/assets/images/covers/cover_19.jpg';
 
 export default function LoginView() {
   const theme = useTheme();
@@ -216,8 +215,8 @@ const SignIn = async () => {
         }}
       >
         <img
-          src={loginImage}
-          alt="Login Image"
+          src="/assets/images/covers/cover_19.jpg"
+          alt="Login"
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />
       </Box>

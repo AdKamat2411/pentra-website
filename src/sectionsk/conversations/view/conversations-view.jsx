@@ -54,7 +54,7 @@ export default function UserPage() {
     setSelected([]);
   };
 
-  let [user, setUser] = useState(null);
+  const [user, setUser] = useState(null);
 
   const handleClick = (event, name, row) => {
     setUser(row);
@@ -83,7 +83,9 @@ export default function UserPage() {
 
   const notFound = !dataFiltered.length && !!filterName;
 
-  
+  const handleClickRoute = () => {
+    window.location.href=`/influencer?influencer=$`
+  }
 
   return (
     <Container>
@@ -94,7 +96,7 @@ export default function UserPage() {
          
         <Stack direction="row" spacing={0} >
         
-        <Avatar cursor="pointer" src={user?.avatarUrl} onClick={() => window.location.href=`/influencer?influencer=${name}`}/>
+        <Avatar cursor="pointer" src={user?.avatarUrl} onClick={() => handleClickRoute()}/>
 
         <Stack sx={{ width: '100%' }} justifyContent="center" direction="row" spacing={1} alignItems="center" justifyContent="center">
             <a

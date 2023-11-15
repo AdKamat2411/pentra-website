@@ -22,7 +22,6 @@ import Iconify from 'src/components/iconify';
 import { auth, googleProvider } from 'src/firebase-config/firebase';
 import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 
-import loginImage from '/assets/images/covers/cover_7.jpg'; // Replace with the actual image path
 
 export default function SignUpView() {
   const theme = useTheme();
@@ -171,8 +170,8 @@ export default function SignUpView() {
         }}
       >
         <img
-          src={loginImage}
-          alt="Login Image"
+          src='/assets/images/covers/cover_7.jpg'
+          alt="SignUp"
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />
       </Box>

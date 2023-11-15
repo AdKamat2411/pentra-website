@@ -3,13 +3,12 @@ import { faker } from '@faker-js/faker';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-import { auth, googleProvider } from 'src/firebase-config/firebase';
+import { auth, db } from 'src/firebase-config/firebase';
 import { useState, useEffect } from 'react';
 import Iconify from 'src/components/iconify';
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 
-import { db } from 'src/firebase-config/firebase';
 import { getDocs, addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 
 
@@ -46,26 +45,27 @@ export default function AppView() {
     }
   };
   
-  const getBrandCampaigns = async () => {
-    const data = await getDocs(brandsData);
-    const userDoc = data.docs.find(doc => doc.id === auth.currentUser.email);
-    if (userDoc) {
-      const name = userDoc.data().user_name || [];
-      const campaigns = userDoc.data().campaigns || [];
-      const campaignsWithPfp = await Promise.all(campaigns.map(async (campaign) => {
-        const pfpUrl = await getProfilePictureUrl(campaign.campaign_id);
-        return { ...campaign, pfpUrl };
-      }));
-      setBrandCampaigns(campaignsWithPfp);
-      setBrandName(name);
-    } else {
-      alert('Error: User document not found.');
-    }
-  };
-  
+ 
   useEffect(() => {
+    const getBrandCampaigns = async () => {
+      const data = await getDocs(brandsData);
+      const userDoc = data.docs.find(docc => docc.id === auth.currentUser.email);
+      if (userDoc) {
+        const name = userDoc.data().user_name || [];
+        const campaigns = userDoc.data().campaigns || [];
+        const campaignsWithPfp = await Promise.all(campaigns.map(async (campaign) => {
+          const pfpUrl = await getProfilePictureUrl(campaign.campaign_id);
+          return { ...campaign, pfpUrl };
+        }));
+        setBrandCampaigns(campaignsWithPfp);
+        setBrandName(name);
+      } else {
+        alert('Error: User document not found.');
+      }
+    };
+    
     getBrandCampaigns();
-  }, []);
+  }, [brandsData]);
 
   const PlaceholderCampaign = {
     id: 'placeholder',

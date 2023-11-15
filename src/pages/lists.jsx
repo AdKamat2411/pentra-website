@@ -5,8 +5,10 @@ import { auth } from 'src/firebase-config/firebase';
 
 export default function ListsPage() {
 
-  if (auth.currentUser) {} else (window.location.href='/login');
-
+  if (!auth.currentUser) {
+    window.location.href = '/login';
+  }
+  
   return (
     <>
       <Helmet>

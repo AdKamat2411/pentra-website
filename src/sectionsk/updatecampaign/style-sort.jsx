@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import { listClasses } from '@mui/material/List';
 import Typography from '@mui/material/Typography';
+import PropTypes from 'prop-types';
 
 import Iconify from 'src/components/iconify';
 
@@ -96,3 +97,9 @@ export default function ShopProductSort({ onChange, values }) {
     </>
   );
 }
+
+ShopProductSort.propTypes = {
+  onChange: PropTypes.func,
+  values: PropTypes.arrayOf(PropTypes.string),
+};
+

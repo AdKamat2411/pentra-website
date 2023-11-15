@@ -7,6 +7,7 @@ import { listClasses } from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 
 import Iconify from 'src/components/iconify';
+import PropTypes from 'prop-types';
 
 const SORT_OPTIONS = [
   { value: 'Styles', label: 'Styles' },
@@ -16,7 +17,7 @@ const SORT_OPTIONS = [
   { value: 'Fashion', label: 'Fashion' },
 ];
 
-export default function ShopProductSort({ onChange, values }) {
+const ShopProductSort = ({ onChange, values }) => {
   const [open, setOpen] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState(values); 
 
@@ -34,25 +35,38 @@ export default function ShopProductSort({ onChange, values }) {
     if (optionValue === 'Styles') {
         if (selectedOptions.includes('Styles')) {
             return;
-        } else {
-            newSelected = ['Styles'];
-        }
-    } else {
-        if (selectedOptions.includes('Styles')) {
-            newSelected = [optionValue];
-        } else if (newSelected.includes(optionValue)) {
-            const index = newSelected.indexOf(optionValue);
-            newSelected.splice(index, 1);
-        } else {
-            newSelected.push(optionValue);
-        }
-    }
+        } 
+            
+    newSelected = ['Styles'];
+        
+    } else if (selectedOptions.includes('Styles')) {
+  newSelected = [optionValue];
+} else if (newSelected.includes(optionValue)) {
+  const index = newSelected.indexOf(optionValue);
+  newSelected.splice(index, 1);
+} else {
+  newSelected.push(optionValue);
+}
+// ...
+
+    
 
     setSelectedOptions(newSelected);
     if (onChange) { // Ensure the callback exists before calling it
       onChange(newSelected); // Pass the updated array to the parent
     }
   };
+
+  const getDisplayText = () => {
+    if (selectedOptions.length === 0) {
+      return "Styles";
+    }
+    if (selectedOptions.length === 1) {
+      return SORT_OPTIONS.find((option) => option.value === selectedOptions[0])?.label;
+    }
+    return `${selectedOptions.length} Styles`;
+  };
+  
 
   return (
     <>
@@ -64,9 +78,7 @@ export default function ShopProductSort({ onChange, values }) {
       >
         &nbsp;
         <Typography component="span" variant="subtitle2" sx={{ color: 'text.secondary' }}>
-          {selectedOptions.length === 0 ? "Styles" : (selectedOptions.length === 1
-            ? SORT_OPTIONS.find((option) => option.value === selectedOptions[0])?.label
-            : `${selectedOptions.length} Styles`)}
+          {getDisplayText}
         </Typography>
       </Button>
 
@@ -99,3 +111,16 @@ export default function ShopProductSort({ onChange, values }) {
     </>
   );
 }
+
+ShopProductSort.defaultProps = {
+  onChange: null,
+  values: [],
+};
+
+ShopProductSort.propTypes = {
+  onChange: PropTypes.func,
+  values: PropTypes.arrayOf(PropTypes.string),
+};
+
+export default ShopProductSort;
+

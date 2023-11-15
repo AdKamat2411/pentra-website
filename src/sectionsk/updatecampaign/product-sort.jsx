@@ -7,7 +7,7 @@ import { listClasses } from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 
 import Iconify from 'src/components/iconify';
-
+import PropTypes from 'prop-types';
 // ----------------------------------------------------------------------
 
 const SORT_OPTIONS = [
@@ -38,15 +38,14 @@ export default function ShopProductSort({ onChange, values }) {
         } else {
             return;  // If "Global" is clicked and it's already selected, do nothing
         }
-    } else {
-        if (selectedOptions.includes('Global')) {
+    } else if (selectedOptions.includes('Global')) {
             newSelected = [optionValue];  // If "Global" is selected and other options are clicked, deselect "Global"
         } else if (selectedOptions.includes(optionValue)) {
             newSelected = selectedOptions.filter(item => item !== optionValue);  // Deselect the option if it's already selected
         } else {
             newSelected = [...selectedOptions, optionValue];  // Select the option if it's not already selected
         }
-    }
+    
 
     // Ensure at least one option is selected
     if (newSelected.length === 0) {
@@ -106,3 +105,8 @@ export default function ShopProductSort({ onChange, values }) {
     </>
   );
 }
+
+ShopProductSort.propTypes = {
+  onChange: PropTypes.func,
+  values: PropTypes.arrayOf(PropTypes.string),
+};

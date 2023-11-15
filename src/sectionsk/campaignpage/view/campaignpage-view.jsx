@@ -61,7 +61,7 @@ export default function UserPage() {
     setSelected([]);
   };
 
-  let [user, setUser] = useState(null);
+  const [user, setUser] = useState(null);
 
   const handleClick = (event, name, row) => {
     setUser(row);
@@ -100,29 +100,31 @@ export default function UserPage() {
 
   const brandsData = collection(db, 'brands');
 
-  const getBrandCampaigns = async () => {
-    try {
-      const data = await getDocs(brandsData);
-      const userDoc = data.docs.find((doc) => doc.id === auth.currentUser.email);
-      
-      const campaigns = userDoc.data().campaigns;
-      const campaignFr = campaigns.find(c => c.campaign_id == campaign_id);
 
-           if (campaignFr) {
-        await setCampaign(campaignFr);
-
-
-      } else {
-        alert('Error: User document not found.');
-      }
-    } catch (err) {
-      alert(err);
-    }
-  };
 
   useEffect(() => {
+    const getBrandCampaigns = async () => {
+      try {
+        const data = await getDocs(brandsData);
+        const userDoc = data.docs.find((docc) => docc.id === auth.currentUser.email);
+        
+        const campaigns = userDoc.data().campaigns;
+        const campaignFr = campaigns.find(c => c.campaign_id === campaign_id);
+  
+             if (campaignFr) {
+          await setCampaign(campaignFr);
+  
+  
+        } else {
+          alert('Error: User document not found.');
+        }
+      } catch (err) {
+        alert(err);
+      }
+    };
+
     getBrandCampaigns();
-  }, []);
+  }, [brandsData, campaign_id]);
 
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
 
@@ -145,7 +147,7 @@ export default function UserPage() {
       const campaigns = campaignDocSnapshot.data().campaigns;
   
       // Find the campaign you want to end by its campaign_id
-      const campaignIndex = campaigns.findIndex(c => c.campaign_id == campaign_id);
+      const campaignIndex = campaigns.findIndex(c => c.campaign_id === campaign_id);
   
       if (campaignIndex !== -1) {
         // Update the campaign status to false
@@ -153,7 +155,7 @@ export default function UserPage() {
   
         // Update the campaign document in Firestore with the modified data
         await updateDoc(campaignDocRef, {
-          campaigns: campaigns
+           campaigns
         });
   
       } else {
@@ -176,6 +178,10 @@ export default function UserPage() {
         alert(err);
       }
     };
+
+    const handleClickRoute = () => {
+      window.location.href=`/influencer?influencer=name`;
+    }
     
 
 
@@ -184,7 +190,10 @@ export default function UserPage() {
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
         <Stack spacing={0.4}>
         <Typography variant="h3">Campaign Applications</Typography>
-        <Typography fontStyle="italic" sx={{ pl: 0.5, }} variant="subtitle4">{campaign_name} {campaign ? (campaign.campaign_status ? null : "- ENDED") : ""}</Typography>
+        <Typography fontStyle="italic" sx={{ pl: 0.5 }} variant="subtitle4">
+  {campaign_name}
+  {campaign && !campaign.campaign_status && "- ENDED"}
+</Typography>
         </Stack>
  
         <Stack direction="row" spacing={2} alignItems="center">
@@ -194,12 +203,15 @@ export default function UserPage() {
         variant="contained" 
         sx={{ width: 40, height: 40, minWidth: 0, padding: 1 }}> 
         <Iconify icon="fluent-mdl2:update-restore" /> </Button>
-     
-        {campaign ? (campaign.campaign_status ? 
-        <Button onClick={() => handleDeleteClick()}
-        variant="contained" 
-        sx={{ width: 40, height: 40, minWidth: 0, padding: 1 }}> 
-        <Iconify icon="iconamoon:trash-light" /> </Button> : null) : null}
+        {
+  campaign && campaign.campaign_status &&
+  <Button onClick={() => handleDeleteClick()}
+          variant="contained" 
+          sx={{ width: 40, height: 40, minWidth: 0, padding: 1 }}> 
+    <Iconify icon="iconamoon:trash-light" />
+  </Button>
+}
+
 
         <Dialog open={deleteConfirmation} onClose={handleCloseDeleteConfirmation}>
         <DialogContent sx={{ mr: 1.2, mt: 1, }}>
@@ -223,11 +235,11 @@ export default function UserPage() {
          
         <Stack direction="row" spacing={0} >
         
-        <Avatar cursor="pointer" src={user?.avatarUrl} onClick={() => window.location.href=`/influencer?influencer=name`}/>
+        <Avatar cursor="pointer" src={user?.avatarUrl} onClick={() => handleClickRoute()}/>
 
         <Stack sx={{ width: '100%' }} justifyContent="center" direction="row" spacing={0.5} alignItems="center" justifyContent="center">
             <a
-            href={`https://www.instagram.com/`}
+            href="https://www.instagram.com/"
             target="_blank"
             rel="noopener noreferrer"
             style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}

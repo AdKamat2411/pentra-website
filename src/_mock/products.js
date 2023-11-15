@@ -1,6 +1,6 @@
 import { sample } from 'lodash';
 import { faker } from '@faker-js/faker';
-import { creator_avatars } from 'src/firebase-config/firebase.js'
+import { creator_avatars } from 'src/firebase-config/firebase'
 
 // ----------------------------------------------------------------------
 

@@ -6,8 +6,9 @@ import { AccountView } from 'src/sectionsk/newcampaign/view';
 // ----------------------------------------------------------------------
 
 export default function ListsPage() {
-  if (auth.currentUser) {} else (window.location.href='/login');
-  return (
+  if (!auth.currentUser) {
+    window.location.href = '/login';
+  }  return (
     <>
       <Helmet>
         <title> New Campaign </title>

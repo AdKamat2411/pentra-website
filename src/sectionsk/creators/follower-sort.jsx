@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import { listClasses } from '@mui/material/List';
 import Typography from '@mui/material/Typography';
-
+import PropTypes from 'prop-types';
 import Iconify from 'src/components/iconify';
 
 const SORT_OPTIONS = [
@@ -27,20 +27,28 @@ export default function ShopProductSort({ onChange, values }) {
     setOpen(null);
   };
 
+  const getDisplayText = () => {
+    if (selectedOptions.length === 0) {
+      return "All Followers";
+    }
+    if (selectedOptions.length === 1) {
+      return selectedOptions[0];
+    }
+    return `${selectedOptions.length} Selections`;
+  };
+
   const handleToggleOption = (optionValue) => {
     let newSelected = [...selectedOptions];
     
     if (optionValue === 'All Followers') {
       newSelected = ['All Followers'];
+    } else if (newSelected.includes('All Followers')) {
+      newSelected = [optionValue];
+    } else if (newSelected.includes(optionValue)) {
+      const index = newSelected.indexOf(optionValue);
+      newSelected.splice(index, 1);
     } else {
-      if (newSelected.includes('All Followers')) {
-        newSelected = [optionValue];
-      } else if (newSelected.includes(optionValue)) {
-        const index = newSelected.indexOf(optionValue);
-        newSelected.splice(index, 1);
-      } else {
-        newSelected.push(optionValue);
-      }
+      newSelected.push(optionValue);
     }
 
     setSelectedOptions(newSelected);
@@ -59,9 +67,7 @@ export default function ShopProductSort({ onChange, values }) {
       >
         &nbsp;
         <Typography component="span" variant="subtitle2" sx={{ color: 'text.secondary' }}>
-          {selectedOptions.length === 0 ? "All Followers" : (selectedOptions.length === 1
-            ? selectedOptions[0]
-            : `${selectedOptions.length} Selections`)}
+        {getDisplayText()}
         </Typography>
       </Button>
 
@@ -94,3 +100,15 @@ export default function ShopProductSort({ onChange, values }) {
     </>
   );
 }
+
+ShopProductSort.defaultProps = {
+  onChange: null,
+  values: [],
+};
+
+// Define prop types
+ShopProductSort.propTypes = {
+  onChange: PropTypes.func,
+  values: PropTypes.array
+};
+

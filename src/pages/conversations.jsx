@@ -5,8 +5,9 @@ import { ConversationsView } from 'src/sectionsk/conversations/view';
 // ----------------------------------------------------------------------
 
 export default function ConversationsPage() {
-  if (auth.currentUser) {} else (window.location.href='/login');
-  return (
+  if (!auth.currentUser) {
+    window.location.href = '/login';
+  }  return (
     <>
       <Helmet>
         <title> Conversations </title>

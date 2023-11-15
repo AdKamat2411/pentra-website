@@ -7,8 +7,9 @@ import { ListsView } from 'src/sectionsk/lists/view';
 // ----------------------------------------------------------------------
 
 export default function ListsPage() {
-  if (auth.currentUser) {} else (window.location.href='/login');
-  return (
+  if (!auth.currentUser) {
+    window.location.href = '/login';
+  }  return (
     <>
       <Helmet>
         <title> Account | Pentra </title>

@@ -15,9 +15,9 @@ function formatFollowers(followers) {
 function generateEmail() {
   if (Math.random() < 0.4) {
     return ''; // 80% of users have no email
-  } else {
-    return faker.internet.email(); // 20% of users have a valid email
   }
+  return faker.internet.email(); // 20% of users have a valid email
+  
 }
 
 export const users = [...Array(20)].map((_, index) => ({

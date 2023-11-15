@@ -14,6 +14,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import Button from '@mui/material/Button';
 import { CardActionArea } from '@mui/material';
+
 // import { deleteList } from './view/delete-function'
 
 import { fDate } from 'src/utils/format-time';
@@ -21,10 +22,8 @@ import Iconify from 'src/components/iconify';
 
 import { db } from 'src/firebase-config/firebase';
 import { deleteDoc, doc } from 'firebase/firestore';
-import { ListNamesView } from '../listnames/view';
-import { ListsView } from './view';
 
-export default function PostCard({ listName, date, listId, listItems, post, index }) {
+export default function PostCard({ listName, date, listId, post, index }) {
   const { title, createdAt } = post;
 
   const latestPostLarge = index === -10;
@@ -167,4 +166,7 @@ export default function PostCard({ listName, date, listId, listItems, post, inde
 PostCard.propTypes = {
   post: PropTypes.object.isRequired,
   index: PropTypes.number,
+  date: PropTypes.any,
+  listId: PropTypes.any,
+  listName: PropTypes.string,
 };

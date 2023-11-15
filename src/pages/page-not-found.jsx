@@ -5,8 +5,10 @@ import { NotFoundView } from 'src/sectionsk/error';
 // ----------------------------------------------------------------------
 
 export default function NotFoundPage() {
-  if (auth.currentUser) {} else (window.location.href='/login');
-  return (
+  if (!auth.currentUser) {
+    window.location.href = '/login';
+  }
+    return (
     <>
       <Helmet>
         <title> 404 Page Not Found </title>

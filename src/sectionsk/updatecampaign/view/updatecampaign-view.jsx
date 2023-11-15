@@ -11,11 +11,10 @@ import FollowerSort from 'src/sectionsk/updatecampaign/follower-sort';
 import PlatformSort from 'src/sectionsk/updatecampaign/platform-sort';
 import EngagementSort from 'src/sectionsk/updatecampaign/engagement-sort';
 import StyleSort from 'src/sectionsk/updatecampaign/style-sort';
-import { auth } from 'src/firebase-config/firebase';
+import { db, auth } from 'src/firebase-config/firebase';
 
 import { getDocs, getDoc, collection, doc, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, getStorage } from 'firebase/storage'; // Import necessary Firebase Storage functions
-import { db } from 'src/firebase-config/firebase';
 
 
 // import { posts } from 'src/_mock/lists';
@@ -45,41 +44,43 @@ export default function AccountView() {
 
   const brandsData = collection(db, 'brands');
 
-  const getBrandCampaigns = async () => {
-    try {
-      const data = await getDocs(brandsData);
-      const userDoc = data.docs.find((doc) => doc.id === auth.currentUser.email);
-      
-      const campaigns = userDoc.data().campaigns;
-      const campaignFr = campaigns.find(c => c.campaign_id == campaign_id);
 
-           if (userDoc) {
-        await setCampaign(campaignFr);
-
-      } else {
-        alert('Error: User document not found.');
-      }
-    } catch (err) {
-      alert(err);
-    }
-  };
-
-  const getPfp = async () => {
-    try {
-      const storage = getStorage();
-      const storageRef = ref(storage, `brands/${auth.currentUser.email}/${campaign_id}`);
-      const downloadUrl = await getDownloadURL(storageRef);
-      setPfp(downloadUrl);
-    } catch (err) {
-      console.error('Error fetching image:', err);
-      return ''; // Return an empty string if there's an error
-    }
-  };
 
   useEffect(() => {
+    const getBrandCampaigns = async () => {
+      try {
+        const data = await getDocs(brandsData);
+        const userDoc = data.docs.find((docc) => docc.id === auth.currentUser.email);
+        
+        const campaigns = userDoc.data().campaigns;
+        const campaignFr = campaigns.find(c => c.campaign_id === campaign_id);
+  
+             if (userDoc) {
+          await setCampaign(campaignFr);
+  
+        } else {
+          alert('Error: User document not found.');
+        }
+      } catch (err) {
+        alert(err);
+      }
+    };
+  
+    const getPfp = async () => {
+      try {
+        const storage = getStorage();
+        const storageRef = ref(storage, `brands/${auth.currentUser.email}/${campaign_id}`);
+        const downloadUrl = await getDownloadURL(storageRef);
+        setPfp(downloadUrl);
+        return null;
+      } catch (err) {
+        console.error('Error fetching image:', err);
+        return ''; // Return an empty string if there's an error
+      }
+    };
     getPfp();
     getBrandCampaigns();
-  }, [])
+  }, [brandsData, campaign_id])
 
   const handleButtonClick = () => {
     if (hiddenInputRef.current) {
@@ -110,14 +111,6 @@ export default function AccountView() {
  
   };
 
-  const deleteList = async () => {
-    const listDoc = doc(db, 'lists', listId);
-    try {
-      await deleteDoc(listDoc);
-    } catch (err) {
-      alert(err);
-    } 
-     };
 
   const endCampaign = async () => {
       if (!auth.currentUser) {
@@ -280,39 +273,38 @@ export default function AccountView() {
       
         {
   campaign?.campaign_filters 
-    ? <LocationSort values={campaign?.campaign_filters['locations'] || ['Global']} />
+    ? <LocationSort values={campaign?.campaign_filters.locations || ['Global']} />
     : null
 }
 {
-  campaign?.campaign_filters && campaign?.campaign_filters['followers'] 
-    ? <FollowerSort values={campaign?.campaign_filters['followers']} />
-    : null
-}
-
-{
-  campaign?.campaign_filters && campaign?.campaign_filters['platforms'] 
-    ? <PlatformSort values={campaign?.campaign_filters['platforms']} />
+  campaign?.campaign_filters && campaign?.campaign_filters.followers
+    ? <FollowerSort values={campaign?.campaign_filters.followers} />
     : null
 }
 
 {
-  campaign?.campaign_filters && campaign?.campaign_filters['engagement'] 
-    ? <EngagementSort values={campaign?.campaign_filters['engagement']} />
+  campaign?.campaign_filters && campaign?.campaign_filters.platforms
+    ? <PlatformSort values={campaign?.campaign_filters.platforms} />
     : null
 }
 
 {
-  campaign?.campaign_filters && campaign?.campaign_filters['styles'] 
-    ? <StyleSort values={campaign?.campaign_filters['styles']} />
+  campaign?.campaign_filters && campaign?.campaign_filters.engagement
+    ? <EngagementSort values={campaign?.campaign_filters.engagement} />
+    : null
+}
+
+{
+  campaign?.campaign_filters && campaign?.campaign_filters.styles
+    ? <StyleSort values={campaign?.campaign_filters.styles} />
     : null
 }
 
         </Stack>
 
-        <Stack direction="row" spacing={2}>
+        <Stack direction="row" spacing={2} />
         
 
-</Stack>
 
       
         </Stack>

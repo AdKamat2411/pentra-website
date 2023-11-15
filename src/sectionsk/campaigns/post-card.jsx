@@ -25,7 +25,7 @@ import { getDownloadURL, ref, getStorage } from 'firebase/storage'; // Import ne
 // ----------------------------------------------------------------------
 
 export default function PostCard({ campaign, index, }) {
-  //const { cover, title, conversations, author, createdAt } = post;
+  // const { cover, title, conversations, author, createdAt } = post;
 
   const latestPostLarge = index === -10;
 
@@ -33,21 +33,23 @@ export default function PostCard({ campaign, index, }) {
 
   const [pfp, setPfp] = useState('/assets/images/avatars/bg1.png');
 
+  
+
+ useEffect (() => {
   const getPfp = async () => {
     try {
       const storage = getStorage();
       const storageRef = ref(storage, `brands/${auth.currentUser.email}/${campaign.campaign_id}`);
       const downloadUrl = await getDownloadURL(storageRef);
       setPfp(downloadUrl);
+      return null;
     } catch (err) {
       console.error('Error fetching image:', err);
       return ''; // Return an empty string if there's an error
     }
   };
-
- useEffect (() => {
   getPfp();
- }, []);
+ }, [campaign.campaign_id]);
 
   const renderAvatar = (
     <Avatar
@@ -220,9 +222,13 @@ export default function PostCard({ campaign, index, }) {
     />
   );
 
+  const handleClick = () => {
+    window.location.href = `/campaignpage?id=${campaign.campaign_id}&name=${campaign.campaign_name}`
+  }
+
   return (
     <Grid xs={12} sm={latestPostLarge ? 12 : 6} md={latestPostLarge ? 3 : 3}>
-      <Card sx = {{ height: 380, }} onClick={() => window.location.href = `/campaignpage?id=${campaign.campaign_id}&name=${campaign.campaign_name}`}>
+      <Card sx = {{ height: 380, }} onClick={() => handleClick()}>
         <CardActionArea>
         <Box
           sx={{

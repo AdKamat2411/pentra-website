@@ -7,6 +7,7 @@ import { listClasses } from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 
 import Iconify from 'src/components/iconify';
+import PropTypes from 'prop-types';
 
 // ----------------------------------------------------------------------
 
@@ -41,14 +42,12 @@ export default function ShopProductSort({ onChange }) {
     } else if (selectedOptions.includes('Styles')) {
       // If "Styles" is already selected, deselect it and select the current option
       newSelected = [optionValue];
-    } else {
-      // If neither "Styles" nor the current option is selected, toggle the current option
-      if (selectedOptions.includes(optionValue)) {
+    } else if (selectedOptions.includes(optionValue)) {
         newSelected = selectedOptions.filter((item) => item !== optionValue);
       } else {
         newSelected = [...selectedOptions, optionValue];
       }
-    }
+    
   
     // Call the onChange callback with the new selected options
     onChange(newSelected);
@@ -101,3 +100,7 @@ export default function ShopProductSort({ onChange }) {
     </>
   );
 }
+
+ShopProductSort.propTypes = {
+  onChange: PropTypes.func,
+};

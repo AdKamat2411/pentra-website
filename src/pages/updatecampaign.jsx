@@ -5,8 +5,9 @@ import { auth } from 'src/firebase-config/firebase';
 // ----------------------------------------------------------------------
 
 export default function ConversationsPage() {
-  if (auth.currentUser) {} else (window.location.href='/login');
-  return (
+  if (!auth.currentUser) {
+    window.location.href = '/login';
+  }  return (
     <>
       <Helmet>
         <title> Update Campaign </title>

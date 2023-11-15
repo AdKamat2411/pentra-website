@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import { listClasses } from '@mui/material/List';
 import Typography from '@mui/material/Typography';
+import PropTypes from 'prop-types';
 
 import Iconify from 'src/components/iconify';
 
@@ -32,8 +33,7 @@ export default function ShopProductSort({ onChange, values }) {
     
     if (optionValue === 'All Followers') {
       newSelected = ['All Followers'];
-    } else {
-      if (newSelected.includes('All Followers')) {
+    } else if (newSelected.includes('All Followers')) {
         newSelected = [optionValue];
       } else if (newSelected.includes(optionValue)) {
         const index = newSelected.indexOf(optionValue);
@@ -41,7 +41,7 @@ export default function ShopProductSort({ onChange, values }) {
       } else {
         newSelected.push(optionValue);
       }
-    }
+    
 
     setSelectedOptions(newSelected);
     if (onChange) {
@@ -94,3 +94,9 @@ export default function ShopProductSort({ onChange, values }) {
     </>
   );
 }
+
+ShopProductSort.propTypes = {
+  onChange: PropTypes.func,
+  values: PropTypes.arrayOf(PropTypes.string),
+};
+
