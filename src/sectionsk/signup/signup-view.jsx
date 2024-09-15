@@ -32,7 +32,7 @@ export default function SignUpView() {
 
   const GoToLogin = () => {
     router.push('/login');
-  };
+  }
 
   const signUpWithGoogle = async () => {
     try {
