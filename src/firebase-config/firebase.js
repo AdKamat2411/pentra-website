@@ -4,7 +4,7 @@ import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import { getStorage, ref, listAll, getDownloadURL, uploadBytes, updateMetadata, getMetadata } from 'firebase/storage';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDySSZ4BcVkOP9XWyKWB-8kcRp35unMVBE",
+  apiKey: '${process.env.FIREBASE_API}',
   authDomain: "pentra-beauty.firebaseapp.com",
   projectId: "pentra-beauty",
   storageBucket: "pentra-beauty.appspot.com",
